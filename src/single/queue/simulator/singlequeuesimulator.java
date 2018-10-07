@@ -324,7 +324,7 @@ public class singlequeuesimulator extends javax.swing.JFrame {
 
     private void exitapp(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitapp
         // TODO add your handling code here:
-        int confirm = JOptionPane.showConfirmDialog(this, "Exit Confirmation", "Are you sure want to exit?",
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure want to exit?", "Exit Confirmation",
                       JOptionPane.YES_NO_OPTION,
                       JOptionPane.QUESTION_MESSAGE);
 
