@@ -5,12 +5,15 @@
  */
 package single.queue.simulator;
 
+import java.awt.Color;
 import java.text.DecimalFormat;
-import java.util.Random;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
 /**
@@ -22,12 +25,17 @@ public class singlequeuesimulator extends javax.swing.JFrame {
     /**
      * Creates new form singlequeuesimulator
      */
+    int Tmax, I;
     public singlequeuesimulator() {
         initComponents();
         setcolumn();
         setparagraph();
+        setlayout();
+        setheader();
+                
+        this.I = 10;
+        this.Tmax = 50;
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,7 +44,8 @@ public class singlequeuesimulator extends javax.swing.JFrame {
     
     public void setcolumn(){ 
         TableColumn column;
-        ArrivalTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF); 
+        ArrivalTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        ClockTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         column = ArrivalTable.getColumnModel().getColumn(0); 
         column.setPreferredWidth(30);
         column = ArrivalTable.getColumnModel().getColumn(1); 
@@ -47,6 +56,13 @@ public class singlequeuesimulator extends javax.swing.JFrame {
         column.setPreferredWidth(125);
         column = ArrivalTable.getColumnModel().getColumn(4); 
         column.setPreferredWidth(110);
+        
+        column = ClockTable.getColumnModel().getColumn(0); 
+        column.setPreferredWidth(125);
+        column = ClockTable.getColumnModel().getColumn(1); 
+        column.setPreferredWidth(125); 
+        column = ClockTable.getColumnModel().getColumn(2); 
+        column.setPreferredWidth(125); 
     }
     
     public void setparagraph(){
@@ -57,6 +73,30 @@ public class singlequeuesimulator extends javax.swing.JFrame {
         ArrivalTable.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );              
         ArrivalTable.getColumnModel().getColumn(3).setCellRenderer( centerRenderer );
         ArrivalTable.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );
+        
+        ClockTable.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
+        ClockTable.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
+        ClockTable.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );              
+    }
+    
+    public void setlayout(){
+        ArrivalTable.setSelectionBackground(Color.CYAN);
+        ArrivalTable.setSelectionForeground(Color.RED);
+        ArrivalTable.setRowSelectionAllowed(true);
+        ArrivalTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
+        ClockTable.setSelectionBackground(Color.CYAN);
+        ClockTable.setSelectionForeground(Color.RED);
+        ClockTable.setRowSelectionAllowed(true);
+        ClockTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+    
+    public void setheader(){
+        // Mendekorasi table header
+        JTableHeader headerarrival = ArrivalTable.getTableHeader();
+        JTableHeader headerclock = ClockTable.getTableHeader();
+        ((DefaultTableCellRenderer) headerarrival.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+        ((DefaultTableCellRenderer) headerclock.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -67,17 +107,18 @@ public class singlequeuesimulator extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        timeMaximum = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         averageNumberCustomer = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         averageTimeCustomer = new javax.swing.JLabel();
         Enter = new javax.swing.JButton();
         Reset = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        ClockTable = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Single Queue Single Server Systems Simulator");
@@ -98,7 +139,7 @@ public class singlequeuesimulator extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -139,24 +180,11 @@ public class singlequeuesimulator extends javax.swing.JFrame {
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel3.setText("Operation's Time (In Minute)");
-
-        timeMaximum.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        timeMaximum.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                timeMaximumActionPerformed(evt);
-            }
-        });
-
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel4.setText("Average Number of Customers");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel5.setText("in The Systems");
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel6.setText("max. 1000 minutes");
 
         averageNumberCustomer.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -184,142 +212,198 @@ public class singlequeuesimulator extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        ClockTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Time", "Event", "No. in Systems"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        ClockTable.setGridColor(new java.awt.Color(102, 255, 255));
+        jScrollPane2.setViewportView(ClockTable);
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel3.setText("Arrival Table");
+
+        jLabel6.setText("Clock Table");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(200, 200, 200)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addGap(209, 209, 209))
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(286, 286, 286)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel3)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel7))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                            .addComponent(jLabel8)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(Enter)
+                                .addComponent(jLabel7)))
+                        .addGap(45, 45, 45)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(timeMaximum, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
                             .addComponent(averageNumberCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(averageTimeCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(24, 24, 24))
+                            .addComponent(averageTimeCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(473, 473, 473)
+                        .addComponent(Reset)))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(Enter)
-                .addGap(40, 40, 40)
-                .addComponent(Reset)
-                .addGap(301, 301, 301))
+                .addGap(31, 31, 31)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(41, 41, 41)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(Reset)
-                            .addComponent(Enter)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(timeMaximum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(16, 16, 16)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(averageNumberCustomer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(averageTimeCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(45, Short.MAX_VALUE))
+                        .addComponent(jLabel5))
+                    .addComponent(averageNumberCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel8)
+                    .addComponent(averageTimeCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Enter)
+                    .addComponent(Reset))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void timeMaximumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeMaximumActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_timeMaximumActionPerformed
-
     private void EnterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnterActionPerformed
         // TODO add your handling code here:
-        double tmax = Integer.valueOf(timeMaximum.getText());
-        if(tmax <= 1000){
-            DefaultTableModel table = (DefaultTableModel) ArrivalTable.getModel();
-            table.getDataVector().removeAllElements();
-            revalidate();
-            double TN = 0 ; //TN = Integral waktu dari N
-            int N = 0; //N = Jumlah pelanggan dalam sistem saat ini
-            int K = 0; //K = Total jumlah kedatangan selama simulasi
-            int T = 0; //T = Waktu saat ini
-            int Tk = 0; // Tk = Index waktu kedatangan
-       
-            int[] Ta = new int[1000]; //Waktu kedatangan
-            int[] Ts = new int[1000]; //Waktu pelayanan
-            int[] Tw = new int[1000]; //Waktu menunggu sampai kedatangan selanjutnya
+        DefaultTableModel arrival = (DefaultTableModel) ArrivalTable.getModel();
+        DefaultTableModel clock = (DefaultTableModel) ClockTable.getModel();
+        DecimalFormat decimal = new DecimalFormat("#.##");
+        singlequeuesimulator simulator = new singlequeuesimulator();
+        int indexB = 1; //Pelanggan mulai dilayani
+        int indexC = 1; //Pelanggan selesai dilayani
+        int indexT = 1; //Kedatangan pelanggan
+        int indexS = 0; //Service time ke berapa
+        int remain = 99; //Banyak waktu sebelum complete
+        int[] a = new int[simulator.Tmax]; //Biner kapan ada kedatangan atau tidak
+        int q = 0; //Banyak customer dalam sistem
+        int work = 1; //Banyaknya server
         
-            Random random = new Random();
-            DecimalFormat decimal = new DecimalFormat("#.##");
-        
-            for (int i=0; i<1000; i++){
-                Ta[i] = random.nextInt(10)+2;
-                Ts[i] = random.nextInt(10)+2;
-            }
-        
-            while (Ta[Tk]<tmax){ //ke Next event
-                if(Ta[Tk] != Ts[Tk]){ //ke Arrival
-                    TN = TN + (Ta[Tk]-T)*N;
-                    T = Ta[Tk];
-                    N++;
-                    K++;
-                    Ta[Tk + 1] = T + random.nextInt(9)+1;
-                
-                    if (N==1){
-                        Ts [Tk +1] = T + random.nextInt(9)+1;    
-                    }
-                }
-                Tw [Tk] = Ta [Tk +1] - Ta [Tk];
-                Tk++;
-            }
-        
-            for (int i=0; i<Tk; i++){
-                table.addRow(new Object[]{i + 1, i + 1, Ta[i], Tw[i], Ts[i]});
-            }
-        
-            String avgnumber = String.valueOf(decimal.format(TN/T));
-            String avgtime = String.valueOf(decimal.format(Math.floor((TN/K)*100)/100));
-            averageNumberCustomer.setText(avgnumber);
-            averageTimeCustomer.setText(avgtime);
+        int Tw [] = new int[simulator.I];// {6,3,6,1,9,2,3,9,4,4};
+        int Ts [] = new int[] {3, 5, 6, 4, 7, 3, 6, 7, 2, 6}; //waktu pelayanan customer
+        int Ta [] = new int[] {4, 10, 13, 19, 20, 29, 31, 34, 43, 47, 51}; //waktu kedatangan customer berikutnya
+
+        for (int i=0; i<simulator.I; i++){
+            Tw[i] = Ta[i+1] - Ta[i];
+            arrival.addRow(new Object[]{i + 1, i + 1, Ta[i], Tw[i], Ts[i]});
         }
-        else {
-            JOptionPane.showMessageDialog(null, "Operational time more than 1000 minutes!","Alert Message", JOptionPane.ERROR_MESSAGE);
+        
+        for(int i = 0; i < simulator.Tmax; i++){
+            a[i] = 0;
         }
+        for(int i = 0; i < simulator.I; i++){
+            a[Ta[i]] = 1;
+        }
+        
+        int[] n = new int[58];
+        for(int i = 0; i < simulator.Tmax; i++){
+            if(a[i] == 1){
+                q++;
+                clock.addRow(new Object[]{i, "t"+indexT, q});
+                indexT++;
+            }
+            if(remain == 0){
+                work = 1;
+                q--;
+                clock.addRow(new Object[]{i, "c"+indexC, q});
+                indexC++;
+            }
+            if(work == 1 && q!=0){
+                clock.addRow(new Object[]{i, "b"+indexB, q});
+                work = 0;
+                remain = Ts[indexS];
+                indexB++;
+                indexS++;
+            }
+            remain--;
+            n[i] = q;
+        }
+        int j = 50;
+        while(q != 0){
+            if(remain == 0){
+                work = 1;
+                q--;
+                clock.addRow(new Object[]{j, "c"+indexC, q});
+                indexC++;
+            }
+            if(work == 1 && q!=0){
+                clock.addRow(new Object[]{j, "b"+indexB, q});
+                work = 0;
+                remain = Ts[indexS];
+                indexB++;
+                indexS++;
+            }
+            remain--;
+            j++;
+            n[j] = q;
+        }
+
+        int sigmaN = 0;
+        for(int i = 0; i < 58; i++){
+            sigmaN = sigmaN + n[i];
+        }
+        double nbar = (double)sigmaN/(double)56;
+        double wbar = (double)sigmaN/(double)10;
+        String avgnumber = String.valueOf(decimal.format(nbar));
+        String avgtime = String.valueOf(decimal.format(wbar));
+        averageNumberCustomer.setText(avgnumber);
+        averageTimeCustomer.setText(avgtime);
     }//GEN-LAST:event_EnterActionPerformed
 
     private void ResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel table = (DefaultTableModel) ArrivalTable.getModel();
-        timeMaximum.setText("");
+        DefaultTableModel arrival = (DefaultTableModel) ArrivalTable.getModel();
+        DefaultTableModel clock = (DefaultTableModel) ClockTable.getModel();
         averageNumberCustomer.setText("");
         averageTimeCustomer.setText("");
-        table.getDataVector().removeAllElements();
-        revalidate();
+        arrival.setRowCount(0);
+        clock.setRowCount(0);
     }//GEN-LAST:event_ResetActionPerformed
 
     private void exitapp(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitapp
@@ -370,6 +454,7 @@ public class singlequeuesimulator extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable ArrivalTable;
+    private javax.swing.JTable ClockTable;
     private javax.swing.JButton Enter;
     private javax.swing.JButton Reset;
     private javax.swing.JLabel averageNumberCustomer;
@@ -384,6 +469,6 @@ public class singlequeuesimulator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField timeMaximum;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }
